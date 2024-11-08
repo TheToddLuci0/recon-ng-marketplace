@@ -39,7 +39,8 @@ class Module(BaseModule):
                 self.print_exception(line=r.content)
                 return
             self.verbose('Dehashed balance: {}'.format(r.json()['balance']))
-            self.load_creds(r.json()['entries'])
+            if r.json()['entries'] is not None and len(r.json()['entries']) > 0:
+                self.load_creds(r.json()['entries'])
             while (req * self.options['page_size']) < r.json()['total']:
                 req += 1
                 r = self.request('GET', 'https://api.dehashed.com/search?query={}&size={}&page={}'.format(
